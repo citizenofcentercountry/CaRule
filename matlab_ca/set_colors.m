@@ -1,14 +1,20 @@
 
 function set_colors()
+global st_n;
+global st_d;
+global st_s;
+global st_i;
     global cells;
     global n;
 
     for i=1:n
       for j=1:n
         c='w';
-        if (cells(i,j)==1)
+        if (cells(i,j)==st_d)
+          c='b';
+        elseif (cells(i,j)==st_s)
           c='g';
-        elseif (cells(i,j)==2)
+        elseif (cells(i,j)==st_i)
           c='r';
         end
     %     disp(c);
@@ -30,6 +36,10 @@ function set_color(x,y,c)
     r(x,y)=0;
     g(x,y)=1;
     b(x,y)=0;
+  elseif(c == 'b' )
+    r(x,y)=0;
+    g(x,y)=0;
+    b(x,y)=1;
   elseif(c == 'w' )
     r(x,y)=1;
     g(x,y)=1;

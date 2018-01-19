@@ -46,22 +46,45 @@ global i_rate;
 global d_rate;
 global die_rate;
 global strtegy;
-
+global st_n;
+global st_d;
+global st_s;
+global st_i;
+global no_changed;
+global infected;
+global strategy_none;
+global strategy_work;    
+global xy_range;
+delete 'countCell.csv';
 % initialize configure
 n=128; %元胞行列
 i_num =  mod(n, 10); %%感染节点个数
 s_num = ceil(n * (n-1)); %%正常节点个数
 i_rate = .2; %%执行感染策略的概率
 d_rate = .8; %%执行防御策略的概率
-die_rate= .01; %%死亡的概率
+die_rate= .001; %%死亡的概率
+xy_range = 3; %可以传播的范围
+
+%caRule返回值
+    no_changed = 1;
+    infected = 2;
+%strategy状态
+% strategy_none - 不作为; strategy_work - 如果是感染节点,则采取感染策略;如果是正常节点,则采取防御策略
+strategy_none = 0;
+strategy_work = 1;
 
 %initialize the arrays
 %0 - D, 1 - S, 2 - I
+st_n = 0;
+st_d = 1;
+st_s = 2;
+st_i = 3;
 % white, green, red
 r=ones(n,n);
 g=ones(n,n);
 b=ones(n,n);
-cells=zeros(n,n);
+%cells=zeros(n,n);
+cells=ones(n,n);
 InitialCell(i_num, s_num );
 
 strtegy=zeros(n,n);
@@ -87,6 +110,7 @@ while (stop==0)
 
         % The CA rule
         UpdateCA();
+        countCell();
         set_colors();
         %draw the new image
         set(imh, 'cdata', cat(3,r,g,b));
