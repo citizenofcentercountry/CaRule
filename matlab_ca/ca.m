@@ -98,6 +98,7 @@ set(imh, 'erasemode', 'none')
 axis equal
 axis tight
 
+rng('shuffle');
 
 %Main event loop
 stop= 0; %wait for a quit button push

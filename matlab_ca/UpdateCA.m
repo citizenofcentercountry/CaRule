@@ -59,6 +59,9 @@ function UpdateCaStatus()
     global die_rate;
     global no_changed;
     global infected;
+    
+    global strategy_none;
+    global strategy_work;    
 
     %nearest neighbor sum
     global st_n;
@@ -66,14 +69,9 @@ function UpdateCaStatus()
     global st_s;
     global st_i;
     cells2 = cells;
-    die_rate1= die_rate;
-    xy_range1 = xy_range;
-    st_d1=st_d;
-    st_s1=st_s;
-    st_i1=st_i;
     % cells=func(cells,die_rate,xy_range,st_d,st_s,st_i)
     
-    cells = calcCA( cells2,  n,n  die_rate1,  xy_range1,  st_d1,  st_s1,  st_i1,  strategy_none,  strategy_work, strtegy);
+    cells = calcCA( cells2,  die_rate,  xy_range,  st_d,  st_s,  st_i,  strategy_none,  strategy_work, strtegy);
     return;
     %%%%%%%%%%%%%%%%
     tic

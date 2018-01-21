@@ -2,14 +2,8 @@
 #include "matrix.h"
     #define no_changed 0
     #define infected 1            
-// 
-void UpdateCaStatus(int *out_cell, int *in_cell, int m, int n, double die_rate, double xy_range, int st_d, int st_s, int st_i, int strategy_none, int strategy_work, int *strtegy);
-int caRules(int *in_cell, int m, int n, double die_rate, double xy_range, int st_d, int st_s, int st_i, int strategy_none, int strategy_work, int *strtegy, int x, int y);
-int caRule(int *in_cell, int m, int n, double die_rate, double xy_range, int st_d, int st_s, int st_i, int strategy_none, int strategy_work, int *strtegy, int x, int y, int x1, int y1);
-void mexFunction(int nlhs,mxArray *plhs[],int nrhs,const mxArray *prhs[])  
-{  
-    int *out_cell;
-    int *in_cell;
+    double *out_cell;
+    double *in_cell;
     int m;
     int n;
     double die_rate;
@@ -19,10 +13,19 @@ void mexFunction(int nlhs,mxArray *plhs[],int nrhs,const mxArray *prhs[])
     int st_i;
     int strategy_none;
     int strategy_work;
-    int *strtegy;
+    double *strtegy;
+
+// 
+void UpdateCaStatus();
+int caRules( int x, int y);
+int caRule(int x, int y, int x1, int y1);
+double myrand();
+void mexFunction(int nlhs,mxArray *plhs[],int nrhs,const mxArray *prhs[])  
+{  
+    //mexPrintf("\nThere are %d right-hand-side argument(s).", nrhs);
     //die_rate,xy_range,st_d,st_s,st_i
     //size of input  
-    in_cell=(int *)mxGetPr(prhs[0]); 
+    in_cell=mxGetPr(prhs[0]); 
     die_rate =mxGetScalar(prhs[1]);  
     xy_range =mxGetScalar(prhs[2]);
     st_d = mxGetScalar(prhs[3]);
@@ -30,32 +33,42 @@ void mexFunction(int nlhs,mxArray *plhs[],int nrhs,const mxArray *prhs[])
     st_i = mxGetScalar(prhs[5]);
     strategy_none = mxGetScalar(prhs[6]);
     strategy_work = mxGetScalar(prhs[7]);  
-    strtegy=(int *)mxGetPr(prhs[8]); 
+    strtegy=mxGetPr(prhs[8]); 
     
     m = mxGetM(prhs[0]);
     n = mxGetN(prhs[0]);
-    plhs[0]=mxCreateNumericMatrix(m,n,mxINT32_CLASS, mxREAL);
+    plhs[0]=mxCreateDoubleMatrix(m,n, mxREAL);
     //outputd pointer
-    out_cell=(int *)mxGetPr(plhs[0]);  
+    out_cell=mxGetPr(plhs[0]);  
+    memcpy(out_cell, in_cell, m * n *sizeof(int));
     
-    
-    
+    mexPrintf("%f\n",myrand());
     //call subfunction  
-  UpdateCaStatus(out_cell, in_cell, m, n, die_rate, xy_range, st_d, st_s, st_i, strategy_none, strategy_work, strtegy); 
+  UpdateCaStatus(); 
 }
-void UpdateCaStatus(int *out_cell, int *in_cell, int m, int n, double die_rate, double xy_range, int st_d, int st_s, int st_i, int strategy_none, int strategy_work, int *strtegy)
+double myrand()
+{
+    double r;
+    //srand(time(0));
+    r = rand() % 10000;
+    return r / 10000.0f;
+}
+
+void UpdateCaStatus()
 {
    int i,j;
  for (i = 1; i < m-1; ++i)
  {
+     //mexPrintf("\n");
      for (j = 1; j < n-1; ++j)
      {
+         //mexPrintf("%d,",in_cell[i*n+j]);
          if (in_cell[i*n+j] == st_s)
          {
              out_cell[i*n+j] = st_s;
-             if (rand() > die_rate)
+             if (myrand() > die_rate)
              {
-                 if (caRules(in_cell, m, n, die_rate, xy_range, st_d, st_s, st_i, strategy_none, strategy_work,strtegy, i, j) == infected)
+                 if (caRules( i, j) == infected)
                  {
                      out_cell[i*n+j] = st_i;
                  }
@@ -65,7 +78,7 @@ void UpdateCaStatus(int *out_cell, int *in_cell, int m, int n, double die_rate, 
          } else if (in_cell[i*n+j] == st_i)
          {
              
-             if (rand() > die_rate)
+             if (myrand() > die_rate)
              {
                  out_cell[i*n+j] = st_i;
              } else {
@@ -78,7 +91,7 @@ void UpdateCaStatus(int *out_cell, int *in_cell, int m, int n, double die_rate, 
  }
 }
 
-int caRules(int *in_cell, int m, int n, double die_rate, double xy_range, int st_d, int st_s, int st_i, int strategy_none, int strategy_work, int *strtegy, int x, int y)
+int caRules( int x, int y)
 {
     int sx,ex,sy,ey, i,j;
     // x  - row ; y - colum
@@ -105,7 +118,7 @@ int caRules(int *in_cell, int m, int n, double die_rate, double xy_range, int st
     
     for ( i =sx; i <= ex; ++i) {
         for ( j=sy; j <=ey; ++j) {
-            if (caRule(in_cell, m, n, die_rate, xy_range, st_d, st_s, st_i, strategy_none, strategy_work,strtegy, x, y, i, j) == infected){
+            if (caRule( x, y, i, j) == infected){
                 
                 return infected;
             }
@@ -114,7 +127,7 @@ int caRules(int *in_cell, int m, int n, double die_rate, double xy_range, int st
     return no_changed;
 }
 
-int caRule(int *in_cell, int m, int n, double die_rate, double xy_range, int st_d, int st_s, int st_i, int strategy_none, int strategy_work, int *strtegy, int x, int y, int x1, int y1)
+int caRule( int x, int y, int x1, int y1)
 {
     int ce, nb, res;
      ce = in_cell[x * n + y];
