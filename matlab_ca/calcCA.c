@@ -8,6 +8,7 @@
     int n;
     double die_rate;
     double xy_range;
+    int st_n =0;
     int st_d;
     int st_s;
     int st_i;
@@ -63,7 +64,7 @@ void UpdateCaStatus()
      for (j = 1; j < n-1; ++j)
      {
          //mexPrintf("%d,",in_cell[i*n+j]);
-         if (in_cell[i*n+j] == st_s)
+         if ((int)in_cell[i*n+j] == st_s)
          {
              out_cell[i*n+j] = st_s;
              if (myrand() > die_rate)
@@ -75,7 +76,7 @@ void UpdateCaStatus()
              } else {
                  out_cell[i*n+j] = st_d;
              }
-         } else if (in_cell[i*n+j] == st_i)
+         } else if ((int)in_cell[i*n+j] == st_i)
          {
              
              if (myrand() > die_rate)
@@ -84,8 +85,11 @@ void UpdateCaStatus()
              } else {
                  out_cell[i*n+j] = st_d;
              }
-         } else {
+         } else if ((int)in_cell[i*n+j] == st_d){
+             
              out_cell[i*n+j] = st_d;
+         } else {
+             out_cell[i*n+j] = st_n;
          }
      }
  }

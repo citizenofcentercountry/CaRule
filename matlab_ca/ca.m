@@ -59,7 +59,7 @@ delete 'countCell.csv';
 % initialize configure
 n=128; %元胞行列
 i_num =  mod(n, 10); %%感染节点个数
-s_num = ceil(n * (n-1)); %%正常节点个数
+s_num = n*n/10; %%正常节点个数
 i_rate = .2; %%执行感染策略的概率
 d_rate = .8; %%执行防御策略的概率
 die_rate= .001; %%死亡的概率
@@ -83,8 +83,8 @@ st_i = 3;
 r=ones(n,n);
 g=ones(n,n);
 b=ones(n,n);
-%cells=zeros(n,n);
-cells=ones(n,n);
+cells=zeros(n,n);
+%cells=ones(n,n);
 InitialCell(i_num, s_num );
 
 strtegy=zeros(n,n);
