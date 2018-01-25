@@ -97,6 +97,8 @@ imh = image(cat(3,r,g,b));
 set(imh, 'erasemode', 'none')
 axis equal
 axis tight
+axis([0,n,0,n]);
+axis xy;
 
 rng('shuffle');
 
