@@ -99,6 +99,9 @@ axis equal
 axis tight
 axis([0,n,0,n]);
 axis xy;
+%title('Title','FontName','Times New Roman','FontWeight','Bold','FontSize',16)
+xlabel('x','FontName','Times New Roman','FontSize',14)
+ylabel('y','FontName','Times New Roman','FontSize',14,'Rotation',90)
 
 rng('shuffle');
 
