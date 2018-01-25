@@ -17,8 +17,9 @@ function countCell( )
                 s_n = s_n + 1;
             elseif cells(x,y) == st_i %I 感染节点
                 i_n = i_n + 1;
-            else %D 死亡节点
+            elseif cells(x,y) == st_d %D 死亡节点
                 d_n = d_n + 1;
+            else
             end
         end
     end
