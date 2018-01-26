@@ -60,10 +60,10 @@ delete 'countCell.csv';
 n=128; %元胞行列
 i_num =  mod(n, 10); %%感染节点个数
 s_num = n*n/10; %%正常节点个数
-i_rate = .2; %%执行感染策略的概率
+i_rate = .55; %%执行感染策略的概率
 d_rate = .8; %%执行防御策略的概率
-die_rate= .001; %%死亡的概率
-xy_range = 3; %可以传播的范围
+die_rate= .02; %%死亡的概率
+xy_range = 2; %可以传播的范围
 
 %caRule返回值
     no_changed = 1;

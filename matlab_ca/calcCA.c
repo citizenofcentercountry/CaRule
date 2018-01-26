@@ -43,7 +43,7 @@ void mexFunction(int nlhs,mxArray *plhs[],int nrhs,const mxArray *prhs[])
     out_cell=mxGetPr(plhs[0]);  
     memcpy(out_cell, in_cell, m * n *sizeof(int));
     
-    mexPrintf("%f\n",myrand());
+    //mexPrintf("%f\n",myrand());
     //call subfunction  
   UpdateCaStatus(); 
 }
