@@ -3,14 +3,16 @@ function countCell( )
 %   Detailed explanation goes here
     global cells;
     global n;
-    global st_n;
+
     global st_d;
     global st_s;
     global st_i;
-    global countCellfile;
+    
     d_n = 0;
     s_n = 0;
     i_n = 0;
+    disp(strcat('n=', num2str(n))); %% 必须保留，否则下面的for循环x会越界，ufo？？？
+
     for x = 2:n-1
         for y = 2:n-1
             if cells(x,y) == st_s %S正常节点
@@ -23,6 +25,7 @@ function countCell( )
             end
         end
     end
+    
     append2file('countCell.csv', [d_n s_n i_n]);
 end
 

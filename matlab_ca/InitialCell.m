@@ -36,6 +36,7 @@ global st_i;
             s_num = s_num  - 1;
         end
     end
+    disp('set S node complete');
     
     %随机设置感染节点的位置
     while i_num > 0
@@ -51,7 +52,7 @@ global st_i;
             i_num = i_num  - 1;
         end
     end
-    
+    disp('set I node complete');
 %     %随机设置正常节点的位置
 %     while s_num > 0
 %         xy=ceil(rand(1,2) * n);
@@ -62,25 +63,25 @@ global st_i;
 %     end
     
     % 周围一圈设置为D
-    y = 1;
-    for x = 1:n
-        cells(x,y) = st_n;
-    end
-    
-    y = n;
-    for x = 1:n
-        cells(x,y) = st_n;
-    end
-    
-    x = 1;
-    for y = 1:n
-        cells(x,y) = st_n;
-    end
-
-    x = n;
-    for y = 1:n
-        cells(x,y) = st_n;
-    end
+%     y = 1;
+%     for x = 1:n
+%         cells(x,y) = st_n;
+%     end
+%     
+%     y = n;
+%     for x = 1:n
+%         cells(x,y) = st_n;
+%     end
+%     
+%     x = 1;
+%     for y = 1:n
+%         cells(x,y) = st_n;
+%     end
+% 
+%     x = n;
+%     for y = 1:n
+%         cells(x,y) = st_n;
+%     end
     
 end
 

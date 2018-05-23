@@ -41,10 +41,21 @@ global r;
 global g;
 global b;
 global cells;
+
 global n;
-global i_rate;
-global d_rate;
-global die_rate;
+global i_num;
+global s_num;
+global s2d_rate;
+global i2d_rate;
+global s2i_rate;
+global xy_range;
+global check_rate;
+global error_report_rate;
+global defend_cost;
+global infect_cost;
+global w_cost;
+
+
 global strtegy;
 global st_n;
 global st_d;
@@ -54,17 +65,27 @@ global no_changed;
 global infected;
 global strategy_none;
 global strategy_work;    
-global xy_range;
-delete 'countCell.csv';
-% initialize configure
-n=128; %元胞行列
-i_num =  mod(n, 10); %%感染节点个数
-s_num = n*n/10; %%正常节点个数
-i_rate = .55; %%执行感染策略的概率
-d_rate = .8; %%执行防御策略的概率
-die_rate= .02; %%死亡的概率
-xy_range = 2; %可以传播的范围
 
+
+delete 'countCell.csv';
+%%
+% initialize configure
+n=500; %元胞行列
+i_num =  10; %%感染节点个数
+s_num = 1000; %%正常节点个数
+s2d_rate = 0.005; %%S -> D 的概率
+i2d_rate = 0.008; %%I->D的概率
+xy_range = 2; %可以传播的范围,通信半径
+check_rate = 0.7; %入侵检测系统检测率
+error_report_rate = 0.2; %误报率
+defend_cost = 80; %防御的成本
+infect_cost = 80; %传播的成本
+w_cost = 100; %传感节点感知数据的收益
+
+%% 恶意程序进行传播的概率
+s2i_rate = (defend_cost + error_report_rate * w_cost) / (2 * check_rate * w_cost);
+
+%%
 %caRule返回值
     no_changed = 1;
     infected = 2;
@@ -114,8 +135,9 @@ while (stop==0)
 
     if (run==1)
 
-        % The CA rule
-        UpdateCA();
+        cells2 = cells;
+        cells = calcCA( cells2, xy_range, st_n, st_d,  st_s,  st_i, s2d_rate, i2d_rate, s2i_rate);
+        
         countCell();
         set_colors();
         %draw the new image

@@ -1,6 +1,6 @@
 
 function set_colors()
-global st_n;
+
 global st_d;
 global st_s;
 global st_i;
