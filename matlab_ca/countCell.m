@@ -1,4 +1,4 @@
-function countCell( )
+function countCell2( )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
     global cells;

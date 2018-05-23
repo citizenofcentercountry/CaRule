@@ -75,7 +75,7 @@ i_num =  10; %%感染节点个数
 s_num = 1000; %%正常节点个数
 s2d_rate = 0.005; %%S -> D 的概率
 i2d_rate = 0.008; %%I->D的概率
-xy_range = 2; %可以传播的范围,通信半径
+xy_range = 4; %可以传播的范围,通信半径
 check_rate = 0.7; %入侵检测系统检测率
 error_report_rate = 0.2; %误报率
 defend_cost = 80; %防御的成本
@@ -138,7 +138,7 @@ while (stop==0)
         cells2 = cells;
         cells = calcCA( cells2, xy_range, st_n, st_d,  st_s,  st_i, s2d_rate, i2d_rate, s2i_rate);
         
-        countCell();
+        countCell(cells, st_n, st_d,  st_s,  st_i);
         set_colors();
         %draw the new image
         set(imh, 'cdata', cat(3,r,g,b));

@@ -1,5 +1,6 @@
 #include "mex.h"    //
 #include "matrix.h"
+#include "math.h"
 
 #define no_changed 0
 #define infected 1            
@@ -54,6 +55,9 @@ void mexFunction(int nlhs,mxArray *plhs[],int nrhs,const mxArray *prhs[])
 
 void dump_param()
 {
+	static int i = 0;
+	if (i != 0) return;
+	++i;
 	mexPrintf("m*n=%d*%d\n", m, n);
 	mexPrintf("xy_range=%f\n", xy_range);
 	mexPrintf("st_n=%d\n", st_n);
@@ -68,7 +72,13 @@ void dump_param()
 double myrand()
 {
     double r;
-    //srand(time(0));
+	static int i = 0;
+	if (i == 0)
+	{
+		srand(time(0));
+		i = 1;
+	}
+    
     r = rand() % 10000;
     return r / 10000.0f;
 }
@@ -113,6 +123,10 @@ void UpdateCaStatus()
          if ((int)in_cell[i*n+j] == st_s)
          {
 			 k = statisticsNeighborStatus(i, j, st_i);
+			 //if (k > 0)
+			 //{
+			//	 mexPrintf("k=%d, r=%f, s2d_rate=%f, s2i_rate=%f, s2s=%f\n",k, r, s2d_rate, s2i_rate, (1 - s2d_rate) * pow((1-s2i_rate), k) + s2d_rate);
+			 //}
 			 r = myrand();
              if (r < s2d_rate)
              {

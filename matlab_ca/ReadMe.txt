@@ -3,4 +3,5 @@
 
 Ö´ÐÐË³ÐòÈçÏÂ:
 >> mex calcCA.c
+>> mex countCell.c
 >> ca
