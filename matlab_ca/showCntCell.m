@@ -43,12 +43,14 @@ VarName2 = dataArray{:, 2};
 VarName3 = dataArray{:, 3};
 
 %% '-s'  表示方格; '-p' 表示五角星;'-d' 表示菱形 '-h' 表示六角形  '-+' 表示用加号 '-o'  表示用圈 '-*'  表示星号
+%% -     solid; :     dotted; --    dashed   ; -.    dashdot 
 %%
 [m,n]=size(VarName1);
 t=1:m;
 %plot(t,VarName1,'+b',t,VarName2,'*g',t,VarName3,'or');
-plot(t,VarName1,'-sb',t,VarName2,'-og',t,VarName3,'-*r');
-%legend('a','Location','best')
+%plot(t,VarName1,'-sb',t,VarName2,'-og',t,VarName3,'-*r');
+plot(t,VarName1,'-.b',t,VarName2,':g',t,VarName3,'--r');
+legend('a','b','c');
 title('Title','FontName','Times New Roman','FontWeight','Bold','FontSize',16)
 xlabel('Time','FontName','Times New Roman','FontSize',14)
 ylabel('Cell Number','FontName','Times New Roman','FontSize',14,'Rotation',90)
