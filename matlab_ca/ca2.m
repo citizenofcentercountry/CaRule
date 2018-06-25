@@ -89,7 +89,7 @@ R=15; %奖励能量(>Cd)
 w=error_report_rate;
 a=check_rate;
 rho_0=fun_rho(Cd, R, w, a);%rho
-rho=rand(); %应该随机生成
+rho=rand(); %表示WSNs中处于I状态的传感节点的概率,是否应该是计算几点周围传播范围内的节点中I状态节点占的比值，而不应该是随机值
 
 phi=20; %状态I传感节点如果传播恶意程序,没有被检测到，它将收获能量(>R)
 Ci=10;
