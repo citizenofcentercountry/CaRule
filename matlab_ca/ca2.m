@@ -76,6 +76,7 @@ s_num = 1000; %%正常节点个数
 s2d_rate = 0.005; %%S -> D 的概率
 i2d_rate = 0.008; %%I->D的概率
 xy_range = 4; %可以传播的范围,通信半径
+
 check_rate = 0.7; %入侵检测系统检测率
 error_report_rate = 0.2; %误报率
 defend_cost = 80; %防御的成本
@@ -88,14 +89,14 @@ R=100;
 w=0.2;
 a=0.1;
 rho_0=fun_rho(Cd, R, w, a);%rho
-rho=0.1 %应该随机生成
+rho=0.1; %应该随机生成
 
 phi=10;
 Ci=10;
 sigma_a_0 = fun_sigma_a(rho, phi, Ci, R, w, a);
 sigma_b_0 = fun_sigma_b(rho, Cd, R, w, a);
-sigma_a=0.1 %应该随机生成
-sigma_b=0.1 %应该随机生成
+sigma_a=0.1; %应该随机生成
+sigma_b=0.1; %应该随机生成
 
 
 
@@ -103,13 +104,6 @@ sigma_b=0.1 %应该随机生成
 s2i_rate = (defend_cost + error_report_rate * w_cost) / (2 * check_rate * w_cost);
 
 %%
-%caRule返回值
-    no_changed = 1;
-    infected = 2;
-%strategy状态
-% strategy_none - 不作为; strategy_work - 如果是感染节点,则采取感染策略;如果是正常节点,则采取防御策略
-strategy_none = 0;
-strategy_work = 1;
 
 %initialize the arrays
 %0 - D, 1 - S, 2 - I
