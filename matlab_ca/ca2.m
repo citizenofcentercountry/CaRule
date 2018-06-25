@@ -84,19 +84,19 @@ infect_cost = 80; %传播的成本
 w_cost = 100; %传感节点感知数据的收益
 
 %%
-Cd=10;
-R=100;
-w=0.2;
-a=0.1;
+Cd=10; %入侵检测系统防御恶意程序的传播消耗的能量
+R=15; %奖励能量(>Cd)
+w=error_report_rate;
+a=check_rate;
 rho_0=fun_rho(Cd, R, w, a);%rho
-rho=0.1; %应该随机生成
+rho=rand(); %应该随机生成
 
-phi=10;
+phi=20; %状态I传感节点如果传播恶意程序,没有被检测到，它将收获能量(>R)
 Ci=10;
 sigma_a_0 = fun_sigma_a(rho, phi, Ci, R, w, a);
 sigma_b_0 = fun_sigma_b(rho, Cd, R, w, a);
-sigma_a=0.1; %应该随机生成
-sigma_b=0.1; %应该随机生成
+sigma_a=rand(); %应该随机生成
+sigma_b=rand(); %应该随机生成
 
 
 
