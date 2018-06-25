@@ -1,6 +1,6 @@
 function InitialCell( i_num, s_num )
 global st_n;
-global st_d;
+% global st_d;
 global st_s;
 global st_i;
     global cells;
