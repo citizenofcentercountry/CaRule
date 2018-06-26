@@ -62,24 +62,24 @@ xy_range = 4; %可以传播的范围,通信半径
 
 check_rate = 0.7; %入侵检测系统检测率
 error_report_rate = 0.2; %误报率
-
-%%
-Ci=10;
+Ci=10; %入侵恶意程序的传播消耗的能量
 Cd=10; %入侵检测系统防御恶意程序的传播消耗的能量
 R=15; %奖励能量(>Cd)
 phi=20; %状态I传感节点如果传播恶意程序,没有被检测到，它将收获能量(>R)
-rho=rand(); %表示WSNs中处于I状态的传感节点的概率
+rho=0.7; %表示WSNs中处于I状态的传感节点的概率
+
+%%
+
 w=error_report_rate;
 a=check_rate;
 rho_0=fun_rho(Cd, R, w, a);%rho
+disp(['rho=', num2str(rho)]);
 disp(['rho_0=', num2str(rho_0)]);
-disp(['rho=', num2str(rho),' SHOULD BE GREATER THAN rho_0=', num2str(rho_0)]);
-
-
+if (rho < rho_0)
+    disp('Warning : rho SHOULD BE GREATER THAN rho_0');
+end
 sigma_a = fun_sigma_a(rho, phi, Ci, R, w, a);
 sigma_b = fun_sigma_b(rho, Cd, R, w, a);
-
-
 
 
 %% 恶意程序进行传播的概率 beta
