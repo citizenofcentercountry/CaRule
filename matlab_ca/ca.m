@@ -43,28 +43,11 @@ global b;
 global cells;
 
 global n;
-global i_num;
-global s_num;
-global s2d_rate;
-global i2d_rate;
-global s2i_rate;
-global xy_range;
-global check_rate;
-global error_report_rate;
-global defend_cost;
-global infect_cost;
-global w_cost;
 
-
-global strtegy;
 global st_n;
 global st_d;
 global st_s;
 global st_i;
-global no_changed;
-global infected;
-global strategy_none;
-global strategy_work;    
 
 
 delete 'countCell.csv';
@@ -73,26 +56,37 @@ delete 'countCell.csv';
 n=500; %元胞行列
 i_num =  10; %%感染节点个数
 s_num = 1000; %%正常节点个数
-s2d_rate = 0.005; %%S -> D 的概率
-i2d_rate = 0.008; %%I->D的概率
+s2d_rate = 0.005; %%S -> D 的概率 eta
+i2d_rate = 0.008; %%I->D的概率 epsilon
 xy_range = 4; %可以传播的范围,通信半径
+
 check_rate = 0.7; %入侵检测系统检测率
 error_report_rate = 0.2; %误报率
-defend_cost = 80; %防御的成本
-infect_cost = 80; %传播的成本
-w_cost = 100; %传感节点感知数据的收益
-
-%% 恶意程序进行传播的概率
-s2i_rate = (defend_cost + error_report_rate * w_cost) / (2 * check_rate * w_cost);
 
 %%
-%caRule返回值
-    no_changed = 1;
-    infected = 2;
-%strategy状态
-% strategy_none - 不作为; strategy_work - 如果是感染节点,则采取感染策略;如果是正常节点,则采取防御策略
-strategy_none = 0;
-strategy_work = 1;
+Ci=10;
+Cd=10; %入侵检测系统防御恶意程序的传播消耗的能量
+R=15; %奖励能量(>Cd)
+phi=20; %状态I传感节点如果传播恶意程序,没有被检测到，它将收获能量(>R)
+rho=rand(); %表示WSNs中处于I状态的传感节点的概率
+w=error_report_rate;
+a=check_rate;
+rho_0=fun_rho(Cd, R, w, a);%rho
+disp(['rho_0=', num2str(rho_0)]);
+disp(['rho=', num2str(rho),' SHOULD BE GREATER THAN rho_0=', num2str(rho_0)]);
+
+
+sigma_a = fun_sigma_a(rho, phi, Ci, R, w, a);
+sigma_b = fun_sigma_b(rho, Cd, R, w, a);
+
+
+
+
+%% 恶意程序进行传播的概率 beta
+s2i_rate = sigma_a;
+%s2i_rate = sigma_a * (1 - sigma_b);
+
+%%
 
 %initialize the arrays
 %0 - D, 1 - S, 2 - I

@@ -1,9 +1,14 @@
+/*******************************************************************
+*   Cellular Automaton
+*******************************************************************/
+
 #include "mex.h"    //
 #include "matrix.h"
 #include "math.h"
-
-#define no_changed 0
-#define infected 1            
+    
+/*******************************************************************
+*   global parameters list
+*******************************************************************/
 double *out_cell;
 double *in_cell;
 int m;
@@ -20,39 +25,9 @@ double s2i_rate; //S->I的概率
 double xy_range; //可以传播的范围,通信半径
 double k; //邻居节点中I节点的个数
 
-// 
-void UpdateCaStatus();
-void dump_param();
-void mexFunction(int nlhs,mxArray *plhs[],int nrhs,const mxArray *prhs[])  
-{  
-    //mexPrintf("\nThere are %d right-hand-side argument(s).", nrhs);
-    //die_rate,xy_range,st_d,st_s,st_i
-    //size of input  
-    in_cell=mxGetPr(prhs[0]); 
-    xy_range =mxGetScalar(prhs[1]);  
-    st_n =mxGetScalar(prhs[2]);
-    st_d = mxGetScalar(prhs[3]);
-    st_s = mxGetScalar(prhs[4]);
-    st_i = mxGetScalar(prhs[5]);
-    s2d_rate = mxGetScalar(prhs[6]);
-    i2d_rate = mxGetScalar(prhs[7]);  
-    s2i_rate = mxGetScalar(prhs[8]); 
-    
-    m = mxGetM(prhs[0]);
-    n = mxGetN(prhs[0]);
-	
-	dump_param();
-    
-	plhs[0]=mxCreateDoubleMatrix(m,n, mxREAL);
-    //outputd pointer
-    out_cell=mxGetPr(plhs[0]);  
-    memcpy(out_cell, in_cell, m * n *sizeof(int));
-
-    //mexPrintf("%f\n",myrand());
-    //call subfunction  
-    UpdateCaStatus(); 
-}
-
+/*******************************************************************
+*   UTIL function list
+*******************************************************************/
 void dump_param()
 {
 	static int i = 0;
@@ -110,6 +85,49 @@ int statisticsNeighborStatus(int x, int y, int st)
 	return k;
 }
 
+/*******************************************************************
+*   S status change function list
+*******************************************************************/
+int func_S_status_change(int x, int y)
+{
+	int k = statisticsNeighborStatus(x, y, st_i);
+	double s2i_rate_all = 1-pow((1 - s2i_rate), k);
+	double r = myrand();
+	int st;
+	 if (r < s2d_rate)
+	 {
+		 st = st_d;
+	 } 
+	 else if (r < s2i_rate_all + s2d_rate) 
+	 {
+		 st = st_i;
+	 }
+	 else
+	 {
+		st = st_s;
+	 }
+	 return st;
+}
+
+/*******************************************************************
+*   I status change function list
+*******************************************************************/
+int func_I_status_change()
+{
+	int st;
+	 if (myrand() < i2d_rate)
+	 {
+		 st = st_d;
+	 } else {
+		 st = st_i;
+	 }
+	 return st;
+}
+
+
+/*******************************************************************
+*   UPDATE STATUS function list
+*******************************************************************/
 void UpdateCaStatus()
 {
    int i,j, k;
@@ -122,34 +140,11 @@ void UpdateCaStatus()
          //mexPrintf("%d,",in_cell[i*n+j]);
          if ((int)in_cell[i*n+j] == st_s)
          {
-			 k = statisticsNeighborStatus(i, j, st_i);
-			 //if (k > 0)
-			 //{
-			//	 mexPrintf("k=%d, r=%f, s2d_rate=%f, s2i_rate=%f, s2s=%f\n",k, r, s2d_rate, s2i_rate, (1 - s2d_rate) * pow((1-s2i_rate), k) + s2d_rate);
-			 //}
-			 r = myrand();
-             if (r < s2d_rate)
-             {
-				 out_cell[i*n+j] = st_d;
-             } 
-			 else if (r < (1 - s2d_rate) * pow((1-s2i_rate), k) + s2d_rate) 
-			 {
-                 out_cell[i*n+j] = st_s;
-             }
-			 else
-			 {
-				out_cell[i*n+j] = st_i;
-			 }
+			 out_cell[i*n+j] = func_S_status_change(i,j);
          } 
 		 else if ((int)in_cell[i*n+j] == st_i)
          {
-             
-             if (myrand() < i2d_rate)
-             {
-                 out_cell[i*n+j] = st_d;
-             } else {
-                 out_cell[i*n+j] = st_i;
-             }
+             out_cell[i*n+j] = func_I_status_change();
          } 
 		 else if ((int)in_cell[i*n+j] == st_d)
 		 {
@@ -162,4 +157,38 @@ void UpdateCaStatus()
          }
      }
  }
+}
+
+
+/*******************************************************************
+*   MAIN function
+*******************************************************************/
+void mexFunction(int nlhs,mxArray *plhs[],int nrhs,const mxArray *prhs[])  
+{  
+    //mexPrintf("\nThere are %d right-hand-side argument(s).", nrhs);
+    //die_rate,xy_range,st_d,st_s,st_i
+    //size of input  
+    in_cell=mxGetPr(prhs[0]); 
+    xy_range =mxGetScalar(prhs[1]);  
+    st_n =mxGetScalar(prhs[2]);
+    st_d = mxGetScalar(prhs[3]);
+    st_s = mxGetScalar(prhs[4]);
+    st_i = mxGetScalar(prhs[5]);
+    s2d_rate = mxGetScalar(prhs[6]);
+    i2d_rate = mxGetScalar(prhs[7]);  
+    s2i_rate = mxGetScalar(prhs[8]); 
+    
+    m = mxGetM(prhs[0]);
+    n = mxGetN(prhs[0]);
+	
+	dump_param();
+    
+	plhs[0]=mxCreateDoubleMatrix(m,n, mxREAL);
+    //outputd pointer
+    out_cell=mxGetPr(plhs[0]);  
+    memcpy(out_cell, in_cell, m * n *sizeof(int));
+
+    //mexPrintf("%f\n",myrand());
+    //call subfunction  
+    UpdateCaStatus(); 
 }

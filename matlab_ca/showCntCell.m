@@ -50,7 +50,7 @@ t=1:m;
 %plot(t,VarName1,'+b',t,VarName2,'*g',t,VarName3,'or');
 %plot(t,VarName1,'-sb',t,VarName2,'-og',t,VarName3,'-*r');
 plot(t,VarName1,'-.b',t,VarName2,':g',t,VarName3,'--r');
-legend('a','b','c');
+legend('D','S','I');
 title('Title','FontName','Times New Roman','FontWeight','Bold','FontSize',16)
 xlabel('Time','FontName','Times New Roman','FontSize',14)
 ylabel('Cell Number','FontName','Times New Roman','FontSize',14,'Rotation',90)
