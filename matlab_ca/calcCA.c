@@ -52,8 +52,10 @@ double myrand()
 	{
 		srand(time(0));
 		i = 1;
+		mexPrintf("set srand only once\n");
 	}
-    
+    r = rand();
+	return r / RAND_MAX;
     r = rand() % 10000;
     return r / 10000.0f;
 }

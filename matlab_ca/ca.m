@@ -58,7 +58,7 @@ i_num =  10; %%感染节点个数
 s_num = 1000; %%正常节点个数
 s2d_rate = 0.005; %%S -> D 的概率 eta
 i2d_rate = 0.008; %%I->D的概率 epsilon
-xy_range = 4; %可以传播的范围,通信半径
+xy_range = 12; %可以传播的范围,通信半径
 
 check_rate = 0.7; %入侵检测系统检测率
 error_report_rate = 0.2; %误报率
